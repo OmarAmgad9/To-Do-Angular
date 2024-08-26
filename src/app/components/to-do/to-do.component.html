@@ -34,7 +34,15 @@
               </tr>
 
             }
+            @for(todo of todos; track todo.id ){
 
+              <tr>
+                <td>{{todo.title}}</td>
+                <td><button class="btn btn-danger" (click)="editTask($index, newTask)" >Edit</button></td>
+                <td><button class="btn btn-danger" (click)="deleteTask($index)">Remove</button></td>
+              </tr>
+
+            }
           </tbody>
         </table>
       }

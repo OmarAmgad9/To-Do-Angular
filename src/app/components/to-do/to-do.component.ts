@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToDo } from '../../modules/to-do';
+import { ToDoService } from '../../service/to-do.service';
 
 @Component({
   selector: 'app-to-do',
@@ -12,9 +14,24 @@ export class ToDoComponent {
   title:string="To Do List Application"
   imgLink:string = ""
 
-  Tasks:string[] = []
-  newTask: string= ''
-  isAvalible:boolean = false
+  Tasks:string[] = [];
+  newTask: string= '';
+  isAvalible:boolean = false;
+
+  todos: ToDo[] = [];
+  newToDo: ToDo = {} as ToDo;
+
+  constructor(private todoService: ToDoService){}
+  ngOnInit():void{
+    this.getToDos()
+  }
+
+  getToDos(){
+    this.todoService.getTodos().subscribe(x=>{
+      this.todos = x
+    })
+  }
+  
 
   addTask(){
     if(this.newTask.trim() != ''){
@@ -22,9 +39,6 @@ export class ToDoComponent {
       this.newTask = ''
       this.isAvalible = true
     }
-    console.log(this.newTask)
-    console.log(`1111111111111`)
-    console.log(this.Tasks)
   }
   editTask(index:number, editNewTask:string): string | void
   {
@@ -46,14 +60,11 @@ export class ToDoComponent {
   }
 
   deleteTask(index:number){
-    for(let i=0; i <= index; i++){
-      if(i == index){
-        console.log(i)
-        this.Tasks.pop()
-      }
-    }
-    if(this.Tasks = []){
+    this.Tasks.splice(index, 1)
+    if(this.Tasks.length <= 0){
       this.isAvalible = false
     }
   }
+
+
 }
